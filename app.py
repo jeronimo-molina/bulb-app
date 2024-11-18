@@ -1,9 +1,8 @@
 import requests
 import math
-import os
 
 # Get the API key from OpenWeather and put here the environment variable
-api_key = ('Your OpenWeather_API_KEY')
+api_key = ('ab9f5526c9c3d7b6fe087f304fcf4eaa')
 
 def calculate_wet_bulb(temp, humidity):
     """
