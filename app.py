@@ -31,7 +31,7 @@ def get_weather_data(city):
         Exception: If there is an issue with the API request or data processing.
     """
     try:
-        request_url = f'http://api.openweathermap.org/data/2.5/weather?appid={os.getenv("API_KEY")}&q={city}&units=metric'
+        request_url = f'http://api.openweathermap.org/data/2.5/weather?appid={api_key}&q={city}&units=metric'
         data = requests.get(request_url).json()
         temp = data['main']['temp']
         humidity = data['main']['humidity']
