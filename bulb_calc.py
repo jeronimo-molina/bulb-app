@@ -40,9 +40,11 @@ def get_alert_message(wet_bulb_temp):
         str: An alert message.
     """
     if wet_bulb_temp > 35:
-        return "Extreme heat! Seek shelter immediately!"
-    elif wet_bulb_temp > 25:
+        return "Extreme heat! Seek fresh shelter immediately!"
+    elif wet_bulb_temp > 24.5 and wet_bulb_temp <= 30:
         return "Moderate heat! Stay in a cool place!"
+    elif wet_bulb_temp > 31 and wet_bulb_temp < 34:
+        return "Warning! High heat! Stay at home or looking for a fresh place!"
     else:
         return "Normal temperature."
 
