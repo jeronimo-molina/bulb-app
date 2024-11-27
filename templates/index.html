@@ -39,11 +39,16 @@
         <p>Wet Bulb Temperature: {{ wet_bulb_temperature }}°C</p>
         {% if wet_bulb_temperature > 35 %}
         <div class="alert alert-danger" role="alert">
-            <i class="fas fa-exclamation-triangle"></i> Extreme heat! Seek shelter immediately!
+            <i class="fas fa-exclamation-triangle"></i> Life risk! Seek an air-conditioned place immediately!
         </div>
-        {% elif wet_bulb_temperature > 25 %}
+        {% elif wet_bulb_temperature >= 31 %}
         <div class="alert alert-warning" role="alert">
-            <i class="fas fa-exclamation-circle"></i> Moderate heat! Stay in a cool place!
+            <i class="fas fa-exclamation-circle"></i> Danger! Seek an air-conditioned place. Risk of life for sensitive
+            people.
+        </div>
+        {% elif wet_bulb_temperature >= 23 %}
+        <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-circle"></i> Alert! Look for a cool place.
         </div>
         {% else %}
         <div class="alert alert-success" role="alert">
