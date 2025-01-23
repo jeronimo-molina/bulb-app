@@ -1,11 +1,10 @@
-import math
-import requests
 import os
+import requests
+import math
 
 def calculate_wet_bulb(temp, humidity):
     """
-    Calcula a temperatura de bulbo úmido.
-    Fórmula simplificada baseada em dados meteorológicos.
+    Calcula a temperatura de bulbo úmido usando uma fórmula simplificada baseada em dados meteorológicos.
     """
     try:
         part1 = temp * math.atan(0.151977 * math.sqrt(humidity + 8.313659))
@@ -18,33 +17,31 @@ def calculate_wet_bulb(temp, humidity):
         raise ValueError(f"Erro no cálculo: {e}")
 
 def get_weather_data(city):
-    
-    # Write a file .env with the API_KEY on OpenWeatherMap
-
+    """
+    Obtém dados meteorológicos e a bandeira do país usando a API do OpenWeatherMap e countryflags.io.
+    """
     try:
+        # Obtenha os dados meteorológicos
         request_url = f'http://api.openweathermap.org/data/2.5/weather?appid={os.getenv("API_KEY")}&q={city}&units=metric'
         data = requests.get(request_url).json()
         temp = data['main']['temp']
         humidity = data['main']['humidity']
-        country = data['sys']['country']
-        return {"temperature": temp, "humidity": humidity, "country": country}
+        country_code = data['sys']['country']
+
+        return {"temperature": temp, "humidity": humidity, "country": country_code}
     except Exception as e:
         raise Exception(f"Erro ao buscar dados meteorológicos: {e}")
 
 def get_alert_message(wet_bulb_temp):
     """
     Generates an alert message based on the wet-bulb temperature.
-    Args:
-        wet_bulb_temp (float): The wet-bulb temperature.
-    Returns:
-        str: An alert message.
     """
     if wet_bulb_temp > 35:
-        return "Extreme heat! Seek fresh shelter immediately!"
-    elif wet_bulb_temp > 24.5 and wet_bulb_temp <= 30:
-        return "Moderate heat! Stay in a cool place!"
-    elif wet_bulb_temp > 31 and wet_bulb_temp < 34:
-        return "Warning! High heat! Stay at home or looking for a fresh place!"
+        return "Life risk! Seek an air-conditioned place immediately!"
+    elif wet_bulb_temp >= 31:
+        return "Danger! Seek an air-conditioned place. Risk of life for sensitive people."
+    elif wet_bulb_temp >= 23:
+        return "Alert! Look for a cool place."
     else:
         return "Normal temperature."
 
@@ -58,13 +55,14 @@ if __name__ == "__main__":
             temp = weather_data['temperature']
             humidity = weather_data['humidity']
             country = weather_data['country']
+            flag = weather_data['flag']
             wet_bulb_temp = calculate_wet_bulb(temp, humidity)
             alert_message = get_alert_message(wet_bulb_temp)
             print(f"City: {city}, {country}")
             print(f"Temperature: {temp}°C")
             print(f"Humidity: {humidity}%")
             print(f"Wet Bulb Temperature: {wet_bulb_temp}°C")
+            print(f"Flag: {flag}")
             print(alert_message)
         except Exception as e:
             print(e)
-

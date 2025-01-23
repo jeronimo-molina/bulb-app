@@ -20,6 +20,7 @@
             padding: 10px;
             z-index: 1000;
         }
+
         .cookie-consent button {
             margin-left: 10px;
         }
@@ -27,46 +28,27 @@
 </head>
 
 <body class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <h1 class="text-center">{{ _('Wet Bulb Temperature Calculator') }}</h1>
-            <div class="text-right">
-                <form id="language-form" method="get" action="/change-language">
-                    <label for="lang">{{ _('Choose your language:') }}</label>
-                    <select name="lang" id="lang" class="form-control" onchange="document.getElementById('language-form').submit();">
-                        <option value="en" {% if get_locale() == 'en' %}selected{% endif %}>English</option>
-                        <option value="pt" {% if get_locale() == 'pt' %}selected{% endif %}>Português</option>
-                        <option value="es" {% if get_locale() == 'es' %}selected{% endif %}>Español</option>
-                    </select>
-                </form>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <form method="POST" class="mt-4">
-                <div class="form-group">
-                    <label for="city">{{ _('City:') }}</label>
-                    <input type="text" id="city" name="city" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">{{ _('Get Wet Bulb Temperature') }}</button>
-            </form>
-        </div>
+    <h1 class="text-center">{{ _('Wet Bulb Temperature Calculator') }}</h1>
+    <div class="text-left">
+        <div class="btn-group" role="group" aria-label="Language selection">
+            <a href="/change-language?lang=en" class="btn btn-outline-secondary {% if get_locale() == 'en' %}active{% endif %}">
+            <img src="https://flagcdn.com/w20/us.png" alt="English" style="width: 20px; height: 15px;">
+            </a>
+            <a href="/change-language?lang=pt" class="btn btn-outline-secondary {% if get_locale() == 'pt' %}active{% endif %}">
+            <img src="https://flagcdn.com/w20/br.png" alt="Português" style="width: 20px; height: 15px;">
+            </a>
+            <a href="/change-language?lang=es" class="btn btn-outline-secondary {% if get_locale() == 'es' %}active{% endif %}">
+            <img src="https://flagcdn.com/w20/es.png" alt="Español" style="width: 20px; height: 15px;">
+            </a>
     </div>
-    <div class="mt-4">
-        <h2>{{ _('What is Wet Bulb Temperature?') }}</h2>
-        <p>{% trans %}The wet bulb temperature is the temperature measured by a thermometer whose bulb (the sensitive part) is
-            wrapped in a wet cloth. This temperature reflects the amount of moisture in the air, as the evaporation of
-            water from the cloth cools the thermometer.{% endtrans %}</p>
-        <h2>{{ _('What is its use?') }}</h2>
-        <p>{% trans %}Wet bulb temperature is crucial for understanding thermal comfort in environments. When the relative humidity
-            is high, the evaporation of sweat from the human body decreases, making the perceived temperature feel
-            hotter. In extreme cases, when the wet bulb temperature is too high, the body may struggle to cool down
-            effectively, which can be dangerous.{% endtrans %}</p>
-        <h3>{{ _('Reference') }}</h3>
-        <p>S.C. Sherwood, M. Huber, An adaptability limit to climate change due to heat stress, Proc. Natl. Acad. Sci. U.S.A.
-            107 (21) 9552-9555, <a href="https://doi.org/10.1073/pnas.0913352107">DOI: 10.1073/pnas.0913352107</a> (2010).</p>
+    <form method="POST" class="mt-4">
+        <div class="form-group">
+            <label for="city">{{ _('City:') }}</label>
+            <input type="text" id="city" name="city" class="form-control" placeholder="{{ _('Enter city name') }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ _('Get Wet Bulb Temperature') }}</button>
+    </form>
 
-        <br><a href="https://derossimolina.com.br">© 2025 J. de Rossi molina</a></br>
-    </div>
     {% if temperature %}
     <div class="mt-4">
         <h2>{{ _('Results for') }} {{ city }}, {{ country }}:</h2>
@@ -97,6 +79,33 @@
     </div>
     {% endif %}
 
+    <div class="mt-4">
+        <h2>{{ _('What is Wet Bulb Temperature?') }}</h2>
+        <p>{% trans %}The wet bulb temperature is the temperature measured by a thermometer whose bulb (the sensitive part) is
+            wrapped in a wet cloth. This temperature reflects the amount of moisture in the air, as the evaporation of
+            water from the cloth cools the thermometer.{% endtrans %}</p>
+        <h2>{{ _('What is its use?') }}</h2>
+        <p>{% trans %}Wet bulb temperature is crucial for understanding thermal comfort in environments. When the relative humidity
+            is high, the evaporation of sweat from the human body decreases, making the perceived temperature feel
+            hotter. In extreme cases, when the wet bulb temperature is too high, the body may struggle to cool down
+            effectively, which can be dangerous.{% endtrans %}</p>
+        <h3>{{ _('Reference') }}</h3>
+        <p>S.C. Sherwood, M. Huber, An adaptability limit to climate change due to heat stress, Proc. Natl. Acad. Sci. U.S.A.
+            107 (21) 9552-9555, <a href="https://doi.org/10.1073/pnas.0913352107">DOI: 10.1073/pnas.0913352107</a> (2010).</p>
+
+        <footer class="mt-5 text-center">
+            <p><a href="https://derossimolina.com.br">© 2025 J. de Rossi Molina</a></p>
+            <div class="btn-group" role="group" aria-label="Social media links">
+            <a href="https://github.com/jeronimo-molina" class="btn btn-outline-secondary" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/molinajeronimo" class="btn btn-outline-secondary" target="_blank">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            </div>
+        </footer>
+    </div>
+
     <!-- Cookie Consent Bar -->
     <div class="cookie-consent" id="cookie-consent">
         {{ _('We use cookies to ensure you get the best experience on our website.') }}
@@ -109,7 +118,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function acceptCookies() {
-            document.cookie = "cookies_accepted=true; path=/; max-age=" + 60*60*24*365;
+            document.cookie = "cookies_accepted=true; path=/; max-age=" + 60 * 60 * 24 * 365;
             document.getElementById('cookie-consent').style.display = 'none';
         }
 
