@@ -20,4 +20,4 @@ EXPOSE 5000
 ENV PYTHONUNBUFFERED=1
 
 # Comando para rodar a aplicação
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
