@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ _('Wet Bulb Temperature') }}</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
@@ -28,25 +28,28 @@
 </head>
 
 <body class="container mt-5">
-    <h1 class="text-center">{{ _('Wet Bulb Temperature Calculator') }}</h1>
-    <div class="text-left">
-        <div class="btn-group" role="group" aria-label="Language selection">
-            <a href="/change-language?lang=en" class="btn btn-outline-secondary {% if get_locale() == 'en' %}active{% endif %}">
-            <img src="https://flagcdn.com/w20/us.png" alt="English" style="width: 20px; height: 15px;">
-            </a>
-            <a href="/change-language?lang=pt" class="btn btn-outline-secondary {% if get_locale() == 'pt' %}active{% endif %}">
-            <img src="https://flagcdn.com/w20/br.png" alt="Português" style="width: 20px; height: 15px;">
-            </a>
-            <a href="/change-language?lang=es" class="btn btn-outline-secondary {% if get_locale() == 'es' %}active{% endif %}">
-            <img src="https://flagcdn.com/w20/es.png" alt="Español" style="width: 20px; height: 15px;">
-            </a>
+    <h1 class="center-align">{{ _('Wet Bulb Temperature Calculator') }}</h1>
+    <div class="row">
+        <div class="col s12">
+            <div class="btn-group" role="group" aria-label="Language selection">
+                <a href="/change-language?lang=en" class="btn btn-outline-secondary {% if get_locale() == 'en' %}active{% endif %}">
+                <img src="https://flagcdn.com/w20/us.png" alt="English" style="width: 20px; height: 15px;">
+                </a>
+                <a href="/change-language?lang=pt" class="btn btn-outline-secondary {% if get_locale() == 'pt' %}active{% endif %}">
+                <img src="https://flagcdn.com/w20/br.png" alt="Português" style="width: 20px; height: 15px;">
+                </a>
+                <a href="/change-language?lang=es" class="btn btn-outline-secondary {% if get_locale() == 'es' %}active{% endif %}">
+                <img src="https://flagcdn.com/w20/es.png" alt="Español" style="width: 20px; height: 15px;">
+                </a>
+            </div>
+        </div>
     </div>
     <form method="POST" class="mt-4">
-        <div class="form-group">
+        <div class="input-field">
             <label for="city">{{ _('City:') }}</label>
-            <input type="text" id="city" name="city" class="form-control" placeholder="{{ _('Enter city name') }}" required>
+            <input type="text" id="city" name="city" class="validate" placeholder="{{ _('Enter city name') }}" required>
         </div>
-        <button type="submit" class="btn btn-primary">{{ _('Get Wet Bulb Temperature') }}</button>
+        <button type="submit" class="btn waves-effect waves-light">{{ _('Get Wet Bulb Temperature') }}</button>
     </form>
 
     {% if temperature %}
@@ -56,25 +59,42 @@
         <p>{{ _('Humidity:') }} {{ humidity }}%</p>
         <p>{{ _('Wet Bulb Temperature:') }} {{ wet_bulb_temperature }}°C</p>
         {% if wet_bulb_temperature > 35 %}
-        <div class="alert alert-danger" role="alert">
+        <div class="card-panel red lighten-2">
             <i class="fas fa-exclamation-triangle"></i> {{ _('Life risk! Seek an air-conditioned place immediately!') }}
         </div>
         {% elif wet_bulb_temperature >= 31 %}
-        <div class="alert alert-warning" role="alert">
+        <div class="card-panel orange lighten-2">
             <i class="fas fa-exclamation-circle"></i> {{ _('Danger! Seek an air-conditioned place. Risk of life for sensitive people.') }}
         </div>
         {% elif wet_bulb_temperature >= 23 %}
-        <div class="alert alert-warning" role="alert">
+        <div class="card-panel yellow lighten-2">
             <i class="fas fa-exclamation-circle"></i> {{ _('Alert! Look for a cool place.') }}
         </div>
         {% else %}
-        <div class="alert alert-success" role="alert">
+        <div class="card-panel green lighten-2">
             <i class="fas fa-leaf"></i> {{ _('Normal temperature.') }}
         </div>
         {% endif %}
     </div>
+    <div class="mt-4">
+        <h2>{{ _('5-Day Weather Forecast') }}</h2>
+        <div class="row">
+            {% for day in forecast_data %}
+            <div class="col s12 m6 l4">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">{{ day.date }}</span>
+                        <p>{{ _('Temperature:') }} {{ day.temperature }}°C</p>
+                        <p>{{ _('Humidity:') }} {{ day.humidity }}%</p>
+                        <p>{{ _('Condition:') }} {{ day.condition }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     {% elif error %}
-    <div class="alert alert-danger mt-4" role="alert">
+    <div class="card-panel red lighten-2 mt-4">
         {{ _('Error:') }} {{ error }}
     </div>
     {% endif %}
@@ -112,10 +132,8 @@
         <button class="btn btn-primary btn-sm" onclick="acceptCookies()">{{ _('Accept') }}</button>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         function acceptCookies() {
             document.cookie = "cookies_accepted=true; path=/; max-age=" + 60 * 60 * 24 * 365;
